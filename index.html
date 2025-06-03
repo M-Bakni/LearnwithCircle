@@ -94,6 +94,37 @@
     .thumbnails img:hover {
       border-color: #333;
     }
+    /* Speed control styles */
+    .speed-control {
+      width: 80%;
+      margin: 10px auto 0px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .speed-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .speed-buttons button {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    .speed-buttons input {
+      width: 60px;
+      font-size: 18px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      user-select: text;
+    }
   </style>
 </head>
 <body>
@@ -107,6 +138,14 @@
       <button id="rotateLeftBtn">دوران يسرةً</button>
       <button onclick="stopRotation()">إيقاف الدوران</button>
       <button id="rotateRightBtn">دوران يمنةً</button>
+
+      <!-- Speed control -->
+      <div class="speed-control">السرعة</div>
+      <div class="speed-buttons">
+        <button id="speedMinusBtn">−</button>
+        <input type="text" id="speedInput" value="3" />
+        <button id="speedPlusBtn">+</button>
+      </div>
 
       <div class="zoom-controls">
         <button onclick="zoomIn()">تقريب +</button>
@@ -128,31 +167,31 @@
       </div>
 
       <div class="thumbnails">
-		  <img 
-			src="https://upload.wikimedia.org/wikipedia/commons/f/f5/%D8%AD%D8%B1%D9%88%D9%81_%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D9%86%D9%8A.svg" 
-			onclick="loadThumbnail(this.src)" 
-			alt="لوحة حروف المعاني" 
-			title="لوحة حروف المعاني"
-		  />
-		  <img 
-			src="https://upload.wikimedia.org/wikipedia/commons/d/d9/%D9%82%D9%88%D8%A7%D8%B9%D8%AF_%D8%B1%D8%B3%D9%85_%D8%A7%D9%84%D9%87%D9%85%D8%B2%D8%A9.svg" 
-			onclick="loadThumbnail(this.src)" 
-			alt="قواعد رسم الهمزة" 
-			title="قواعد رسم الهمزة"
-		  />
-		  <img 
-			src="https://upload.wikimedia.org/wikipedia/commons/c/c3/%D9%82%D9%88%D8%A7%D8%B9%D8%AF_%D8%A7%D9%84%D8%A5%D9%85%D9%84%D8%A7%D8%A1.svg" 
-			onclick="loadThumbnail(this.src)" 
-			alt="قواعد الإملاء" 
-			title="قواعد الإملاء"
-		  />
-		  <img 
-			src="https://upload.wikimedia.org/wikipedia/commons/8/80/%D9%85%D8%B9%D8%A7%D9%84%D9%85_%D8%A7%D9%84%D9%86%D8%AD%D9%88_%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A.svg" 
-			onclick="loadThumbnail(this.src)" 
-			alt="معالم النحو العربي" 
-			title="معالم النحو العربي"
-		  />
-</div>
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/f/f5/%D8%AD%D8%B1%D9%88%D9%81_%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D9%86%D9%8A.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="لوحة حروف المعاني" 
+          title="لوحة حروف المعاني"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/d/d9/%D9%82%D9%88%D8%A7%D8%B9%D8%AF_%D8%B1%D8%B3%D9%85_%D8%A7%D9%84%D9%87%D9%85%D8%B2%D8%A9.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="قواعد رسم الهمزة" 
+          title="قواعد رسم الهمزة"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/c/c3/%D9%82%D9%88%D8%A7%D8%B9%D8%AF_%D8%A7%D9%84%D8%A5%D9%85%D9%84%D8%A7%D8%A1.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="قواعد الإملاء" 
+          title="قواعد الإملاء"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/8/80/%D9%85%D8%B9%D8%A7%D9%84%D9%85_%D8%A7%D9%84%D9%86%D8%AD%D9%88_%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="معالم النحو العربي" 
+          title="معالم النحو العربي"
+        />
+      </div>
 
     </div>
 
@@ -179,11 +218,17 @@
   let clickedLeftSide = false;
   let rotateTimeout = null;
 
+  let rotationSpeed = 3; // degrees per tick, default
+
   const img = document.getElementById('rotatingImage');
   const container = document.getElementById('imageContainer');
   const fileInput = document.getElementById('fileInput');
   const rotateLeftBtn = document.getElementById('rotateLeftBtn');
   const rotateRightBtn = document.getElementById('rotateRightBtn');
+
+  const speedInput = document.getElementById('speedInput');
+  const speedMinusBtn = document.getElementById('speedMinusBtn');
+  const speedPlusBtn = document.getElementById('speedPlusBtn');
 
   function updateTransform() {
     img.style.transform = `translate(${posX}px, ${posY}px) rotate(${rotation}deg) scale(${scale})`;
@@ -197,7 +242,7 @@
     stopRotation();
     currentDirection = direction;
     rotateInterval = setInterval(() => {
-      rotation += (direction === 'left' ? -3 : 3);
+      rotation += (direction === 'left' ? -rotationSpeed : rotationSpeed);
       updateTransform();
     }, 50);
   }
@@ -253,6 +298,30 @@
     img.src = src;
     resetImage();
   }
+
+  // Speed control handlers
+  function updateSpeedInput() {
+    speedInput.value = rotationSpeed.toFixed(2);
+  }
+
+  function changeSpeed(amount) {
+    rotationSpeed = Math.min(10, Math.max(0.05, rotationSpeed + amount));
+    updateSpeedInput();
+  }
+
+  speedMinusBtn.addEventListener('click', () => changeSpeed(-0.15)); // ~5%
+  speedPlusBtn.addEventListener('click', () => changeSpeed(0.15));
+
+  speedInput.addEventListener('change', () => {
+    let val = parseFloat(speedInput.value);
+    if (isNaN(val)) {
+      updateSpeedInput();
+      return;
+    }
+    val = Math.min(10, Math.max(0.05, val));
+    rotationSpeed = val;
+    updateSpeedInput();
+  });
 
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -313,6 +382,7 @@
     }
   });
 
+  updateSpeedInput();
   updateTransform();
 </script>
 
