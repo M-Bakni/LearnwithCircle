@@ -14,7 +14,7 @@
       height: 100vh;
     }
     .image-container {
-      width: 75%;
+      width: 85%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -30,8 +30,23 @@
       cursor: grab;
       user-select: none;
     }
+	#ccIcon {
+	  position: fixed;
+	  bottom: 10px;
+	  left: 10px;
+	  z-index: 9999;
+	}
+	#ccIcon img {
+	  width: 80px;
+	  height: 80px;
+	  opacity: 0.8;
+	  transition: opacity 0.3s ease;
+	}
+	#ccIcon:hover img {
+	opacity: 1;
+	}
     .controls {
-      width: 25%;
+      width: 15%;
       background: #fff;
       padding: 20px;
       display: flex;
@@ -385,6 +400,8 @@
   updateSpeedInput();
   updateTransform();
 </script>
-
+<a href="https://creativecommons.org/licenses/by/4.0/deed.en" target="_blank" id="ccIcon" title="Creative Commons BY 4.0 License">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/CC_BY_icon.svg" alt="CC BY License" />
+</a>
 </body>
 </html>
