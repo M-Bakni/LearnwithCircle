@@ -174,7 +174,9 @@
   let moveInterval = null;
   let currentDirection = null;
   let mouseHold = false;
+  let startX = 0;
   let startY = 0;
+  let clickedLeftSide = false;
   let rotateTimeout = null;
 
   const img = document.getElementById('rotatingImage');
@@ -200,14 +202,8 @@
     }, 50);
   }
 
-  function rotateLeft() {
-    startRotation('left');
-  }
-
-  function rotateRight() {
-    startRotation('right');
-  }
-
+  function rotateLeft() { startRotation('left'); }
+  function rotateRight() { startRotation('right'); }
   function stopRotation() {
     clearInterval(rotateInterval);
     rotateInterval = null;
@@ -287,7 +283,11 @@
     }
 
     mouseHold = true;
+    startX = e.clientX;
     startY = e.clientY;
+
+    const rect = img.getBoundingClientRect();
+    clickedLeftSide = startX < (rect.left + rect.width / 2);
   });
 
   window.addEventListener('mouseup', (e) => {
@@ -300,19 +300,17 @@
 
     const deltaY = e.clientY - startY;
 
-    if (Math.abs(deltaY) < 10) return;
-
-    if (rotateInterval) return;
-
-    if (deltaY < 0) {
-      startRotation('left');
+    if (Math.abs(deltaY) > 15) {
+      if (clickedLeftSide) {
+        if (deltaY < 0) startRotation('right');
+        else startRotation('left');
+      } else {
+        if (deltaY < 0) startRotation('left');
+        else startRotation('right');
+      }
       rotateTimeout = setTimeout(stopRotation, 2000);
-    } else if (deltaY > 0) {
-      startRotation('right');
-      rotateTimeout = setTimeout(stopRotation, 2000);
+      mouseHold = false;
     }
-
-    mouseHold = false;
   });
 
   updateTransform();
