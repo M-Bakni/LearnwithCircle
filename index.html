@@ -48,10 +48,10 @@
     .controls {
       width: 15%;
       background: #fff;
-      padding: 20px;
+      padding: 10px 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       border-left: 1px solid #ccc;
     }
@@ -170,6 +170,15 @@
 	  height: 24px;
 	  vertical-align: middle;
 }
+.title-banner {
+	  font-size: 2.2em; /* Adjust size as needed */
+	  font-weight: bold;
+	  text-align: center;
+	  color: #2c3e50;
+	  margin: 5px 0 20px 5px;
+	  line-height: 1.2;
+}
+
   </style>
 </head>
 <body>
@@ -190,6 +199,7 @@
     <img id="rotatingImage" src="img.png" alt="Rotating" />
   </div>
   <div class="controls">
+	<div class="title-banner">تعليم العربية بالدوائر</div>
     <div class="buttons">
       <button id="rotateLeftBtn">دوران يسرةً</button>
       <button onclick="stopRotation()">إيقاف الدوران</button>
@@ -277,7 +287,7 @@
 
     <div style="width: 100%; margin-top: 20px; text-align: center;">
       <label for="fileInput" style="cursor: pointer; display: inline-block; text-align: center; padding: 10px; border: 1px solid #666; border-radius: 5px;">
-        اختر صورة
+        ارفع صورة من حاسوبك
       </label>
       <input type="file" id="fileInput" accept="image/*" />
     </div>
