@@ -155,7 +155,7 @@
       <button id="rotateRightBtn">دوران يمنةً</button>
 
       <!-- Speed control -->
-      <div class="speed-control">السرعة</div>
+      <div class="speed-control">سرعة الدوران</div>
       <div class="speed-buttons">
         <button id="speedMinusBtn">−</button>
         <input type="text" id="speedInput" value="3" />
@@ -163,8 +163,8 @@
       </div>
 
       <div class="zoom-controls">
+        <button onclick="zoomOut()">تبعيد <br>-</button>
         <button onclick="zoomIn()">تقريب +</button>
-        <button onclick="zoomOut()">تبعيد −</button>
       </div>
 
       <div class="nav-controls">
@@ -205,6 +205,30 @@
           onclick="loadThumbnail(this.src)" 
           alt="معالم النحو العربي" 
           title="معالم النحو العربي"
+        />
+		<img 
+          src="https://upload.wikimedia.org/wikipedia/commons/8/8e/%D9%85%D8%B9%D8%A7%D9%84%D9%85_%D8%A7%D9%84%D8%A8%D9%84%D8%A7%D8%BA%D8%A9_%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="معالم البلاغة" 
+          title="معالم البلاغة"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/8/85/%D8%A7%D9%84%D8%AA%D9%82%D8%B3%D9%8A%D9%85%D8%A7%D8%AA_%D8%A7%D9%84%D8%B5%D8%B1%D9%81%D9%8A%D8%A9_%D9%84%D9%84%D8%A3%D8%B3%D9%85%D8%A7%D8%A1.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="التقسيمات الصرفية للأسماء" 
+          title="التقسيمات الصرفية للأسماء"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/a/a8/%D9%85%D8%B9%D8%A7%D9%84%D9%85_%D8%A7%D9%84%D8%B5%D8%B1%D9%81_%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="معالم الصرف العربي.svg" 
+          title="معالم الصرف العربي.svg"
+        />
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/3/3b/%D8%A5%D8%AD%D8%B5%D8%A7%D8%A1%D8%A7%D8%AA_%D8%A7%D9%84%D8%A3%D9%81%D8%B9%D8%A7%D9%84_%D8%A7%D9%84%D8%AB%D9%84%D8%A7%D8%AB%D9%8A%D8%A9_%D9%88%D8%A7%D9%84%D8%B1%D8%A8%D8%A7%D8%B9%D9%8A%D8%A9_%D8%A7%D9%84%D9%85%D8%AC%D8%B1%D8%AF%D8%A9_%D9%88%D8%A7%D9%84%D9%85%D8%B2%D9%8A%D8%AF%D8%A9_%D9%85%D9%88%D8%B2%D8%B9%D8%A9_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D8%A3%D8%A8%D9%88%D8%A7%D8%A8_%D8%A7%D9%84%D8%AA%D8%B5%D8%B1%D9%8A%D9%81%D9%8A%D8%A9_%D9%88%D8%B5%D9%8A%D8%BA_%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%AF%D8%A9_%D9%88%D8%A7%D9%84%D9%84%D8%B2%D9%88%D9%85_%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%AF%D9%8A%D8%A9.svg" 
+          onclick="loadThumbnail(this.src)" 
+          alt="إحصاءات الأفعال الثلاثية والرباعية المجردة والمزيدة" 
+          title="إحصاءات الأفعال الثلاثية والرباعية المجردة والمزيدة"
         />
       </div>
 
@@ -339,9 +363,30 @@
   });
 
   container.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    e.deltaY < 0 ? zoomIn() : zoomOut();
-  });
+  e.preventDefault();
+
+  const rect = img.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const prevScale = scale;
+  const scaleFactor = 0.1;
+
+  if (e.deltaY < 0) {
+    scale += scaleFactor;
+  } else {
+    scale = Math.max(0.1, scale - scaleFactor);
+  }
+
+  // Adjust position to keep the point under cursor stable
+  const dx = mouseX - rect.width / 2;
+  const dy = mouseY - rect.height / 2;
+
+  posX -= dx * (scale - prevScale) / scale;
+  posY -= dy * (scale - prevScale) / scale;
+
+  updateTransform();
+});
 
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
