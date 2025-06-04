@@ -29,12 +29,14 @@
       transform-origin: center;
       cursor: grab;
       user-select: none;
+	  z-index: 10;
     }
 	#ccIcon {
-	  position: fixed;
+	  position: absolute;
 	  bottom: 10px;
 	  left: 10px;
-	  z-index: 9999;
+	  z-index: 1;
+	  opacity: 0.7;
 	}
 	#ccIcon img {
     width: 80px; 
@@ -141,21 +143,22 @@
 	
 	.credit-text {
 	  position: absolute;
-	  bottom: 15px;
+	  bottom: 10px;
 	  right: 10px;
-	  background: rgba(255, 255, 255, 0.85);
+	  background: rgba(255, 255, 255, 0.7);
 	  padding: 6px 10px;
 	  border-radius: 6px;
-	  font-size: 1rem; 
+	  font-size: 0.9rem; 
 	  color: #333;
 	  direction: rtl;
-	  flex-wrap: wrap;
 	  text-align: right;
 	  max-width: 90%;
 	  line-height: 1.6;
 	  display: flex;
-	  align-items: center; /* Align text and icon vertically */
-	  gap: 8px; /* Space between text and icon */
+	  align-items: center;
+	  gap: 8px;
+	  z-index: 1;
+
 	}
 	 .credit-text span {
     flex: 1 1 auto;
@@ -180,28 +183,27 @@
 	  margin: 5px 0 20px 5px;
 	  line-height: 1.2;
 }
-
   </style>
 </head>
 <body>
 
 <div class="main">
-  <div class="image-container" id="imageContainer">
-<div class="credit-text">
-  <span>
-    هذه الصفحة من تصميم 
-    <a href="https://ar.wikipedia.org/wiki/%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Michel_Bakni" target="_blank">د. ميشيل بكني</a>، 
-    ومحتواها العلمي من إعداد 
-    <a href="https://ar.wikipedia.org/wiki/%D9%8A%D8%AD%D9%8A%D9%89_%D9%85%D9%8A%D8%B1_%D8%B9%D9%84%D9%85" target="_blank">د. يحيى مير علم</a>.
-  </span>
+<div class="image-container" id="imageContainer">
+  <div class="credit-text">
+    <span>
+      إعداد:
+      <a href="https://w.wiki/8Rau" target="_blank">د. يحيى مير علم</a><br>
+      تصميم:
+	  <a href="https://ar.wikipedia.org/wiki/%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Michel_Bakni" target="_blank">د. ميشيل بكني</a>
+    </span>
+  </div>
   <a href="https://creativecommons.org/licenses/by/4.0/deed.en" target="_blank" id="ccIcon" title="Creative Commons BY 4.0 License">
     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/CC_BY_icon.svg" alt="CC BY License" />
   </a>
+  <img id="rotatingImage" src="img.png" alt="Rotating" />
 </div>
-    <img id="rotatingImage" src="img.png" alt="Rotating" />
-  </div>
   <div class="controls">
-	<div class="title-banner">تعليم العربية بالدوائر</div>
+	<div class="title-banner">تعليم علوم العربية بالدوائر</div>
     <div class="buttons">
       <button id="rotateLeftBtn">دوران يسرةً</button>
       <button onclick="stopRotation()">إيقاف الدوران</button>
